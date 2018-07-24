@@ -5,58 +5,57 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-card *ngIf="product">
-<ion-card-header>
-  <ion-item>
-    <ion-avatar item-start>
-      <img [src]="product.photoURL">
-    </ion-avatar>
-    <h2>{{product.name}}</h2>
-    <p>{{product.producer}}</p>
-  </ion-item>
-</ion-card-header>
-  <ion-card-content>
+  <ion-card *ngIf="product$ | async as product">
+    <ion-card-header>
+      <ion-item>
+        <ion-avatar item-start>
+          <img [src]="product.photoURL">
+        </ion-avatar>
+        <h2>{{product.name}}</h2>
+        <p>{{product.producer}}</p>
+      </ion-item>
+    </ion-card-header>
+    <ion-card-content>
+      <h2>{{product.vintage}} {{ product.region }} {{product.variety}}</h2>
+      <ion-grid>
+        <ion-row justify-content-center>
+          <ion-col>
+            Per Bottle:
+          </ion-col>
+          <ion-col>
+            {{product.unitCost | currency}}
+          </ion-col>
+        </ion-row>
+        <ion-row justify-content-center>
+          <ion-col>
+            Carton Size:
+          </ion-col>
+          <ion-col>
+            {{product.cartonSize}}
+          </ion-col>
+        </ion-row>
+        <ion-row justify-content-center>
+          <ion-col>
+            Per Carton:
+          </ion-col>
+          <ion-col>
+            {{product.unitCost * product.cartonSize | currency}}
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      <p>{{product.description}}</p>
+    </ion-card-content>
     <ion-row>
-      <ion-col>
-        {{product.vintage}}
+      <ion-col col-6>
+        <button ion-button icon-start clear small (click)="op.addToList('shortlist', product, user.busId)">
+          <ion-icon name="thumbs-up" small>Add to Shortlist</ion-icon>
+        </button>
       </ion-col>
-      <ion-col>
-        {{ product.region }}
-      </ion-col>
-      <ion-col>
-        {{product.variety}}
+      <ion-col col-6>
+        <button ion-button icon-end clear small (click)="op.addToList('winelist', product, user.busId)">
+          <ion-icon name="text" small>Add to Winelist</ion-icon>
+        </button>
       </ion-col>
     </ion-row>
-    <ion-row>
-      <ion-col>
-        {{product.unitCost}}
-      </ion-col>
-      <ion-col>
-        {{product.cartonSize}}
-      </ion-col>
-      <ion-col>
-        {{product.unitCost * product.cartonSize}}
-      </ion-col>
-    </ion-row>
-  </ion-card-content>
-  <ion-row>
-    <ion-col>
-      <button ion-button icon-start clear small>
-        <ion-icon name="thumbs-up"></ion-icon>
-        <div>12 Likes</div>
-      </button>
-    </ion-col>
-    <ion-col>
-      <button ion-button icon-start clear small>
-        <ion-icon name="text"></ion-icon>
-        <div>4 Comments</div>
-      </button>
-    </ion-col>
-    <ion-col center text-center>
-      <ion-note>
-        11h ago
-      </ion-note>
-    </ion-col>
-  </ion-row>
   </ion-card>
 </ion-content>

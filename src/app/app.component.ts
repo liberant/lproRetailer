@@ -5,8 +5,6 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 //import { AngularFireAuth } from 'angularfire2/auth';
 import { AuthProvider } from '../providers/auth/auth';
 
-import { TabsPage } from '../pages/tabs/tabs';
-
 @Component({
   templateUrl: 'app.html'
 })
@@ -17,7 +15,7 @@ export class MyApp {
     auth.afAuth.authState.subscribe(user => {
       if (user) {
         auth.loadUser(user.uid);
-        this.rootPage = TabsPage;
+        this.rootPage = 'TabsPage';
       } else {
         this.rootPage = 'LoginPage';
       }

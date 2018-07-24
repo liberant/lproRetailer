@@ -1,18 +1,85 @@
-<!--
-  Generated template for the ReceivePage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Receive</ion-title>
+    <ion-title>Orders</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
+  <div *ngIf="ordersList">
+    <ion-list *ngFor="let status of statusList | orderBy: 'order'">
+      <ion-item-group *ngFor="let group of ordersList | async | filterBy: ['status']: status.val | groupBy: ['status'] | pairs">
 
+        <ion-list-header text-center>{{group[0] | uppercase}}</ion-list-header>
+
+        <ion-item-group *ngFor="let orders of group[1] | groupBy: 'producer' | pairs">
+          <ion-item-divider>{{orders[0] | uppercase}}</ion-item-divider>
+          <ion-card *ngFor="let order of orders[1] | orderBy: 'orderDate'">
+            <ion-card-header><ion-item>{{ order.createdAt.toDate() | date: 'dd/MM/yy' }}  <ion-note item-right>{{order.total | currency }}</ion-note></ion-item>
+            </ion-card-header>
+            <ion-card-content>
+              <ion-list>
+                <ion-list-header (click)="order.vis = !order.vis" > Products</ion-list-header>
+                <div *ngIf="order.vis">
+                  <ion-item *ngFor="let product of order.products">
+                    {{product.name}}
+                  </ion-item>
+                </div>
+              </ion-list>
+              <ion-grid [ngSwitch]="order.status" no-padding>
+                <ion-row *ngSwitchCase="'submitted'">
+                  <ion-col>
+                    <ion-item>
+                      Awaiting Approval
+                    </ion-item>
+                  </ion-col>
+                </ion-row>
+                <ion-row *ngSwitchCase="'approved'">
+                  <ion-col>
+                    <ion-item>
+                      Approved: {{order.approvedDate.toDate()  | date: 'dd/MM/yyy'}}
+                    </ion-item>
+                  </ion-col>
+                </ion-row>
+                <ion-row  *ngSwitchCase="'shipped'">
+                  <ion-col col-6>
+                    <ion-row>
+                      <ion-col>
+                        <ion-item>
+                          <h3>Shipped Date:</h3>
+                          <p>{{order.shippedDate.toDate()  | date: 'dd/MM/yyy'}}</p>
+                        </ion-item>
+                      </ion-col>
+                    </ion-row>
+                    <ion-row>
+                      <ion-col>
+                        <ion-item>
+                          <h3>Expected Delivery:</h3>
+                          <p>{{order.expectedDate.toDate()  | date: 'dd/MM/yyy'}}</p>
+                        </ion-item>
+                      </ion-col>
+                    </ion-row>
+                  </ion-col>
+                  <ion-col col-6 justify-content-center>
+                    <ion-item>
+                      Receive Order
+                    </ion-item>
+                    <button ion-button ><ion-icon name="qr-scanner"></ion-icon></button>
+                  </ion-col>
+                </ion-row>
+                <ion-row *ngSwitchCase="'received'">
+                  <ion-col>
+                    {{order.receivedDate.toDate()  | date: 'dd/MM/yyy'}}
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+
+            </ion-card-content>
+          </ion-card>
+        </ion-item-group>
+      </ion-item-group>
+    </ion-list>
+  </div>
 </ion-content>

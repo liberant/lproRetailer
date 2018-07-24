@@ -34,15 +34,15 @@
 </ion-header>
 <ion-content padding>
   <ion-item-group *ngFor="let group of productsList | async | groupBy: groupvar | pairs">
-    <ion-item-divider>{{group[0] | ucfirst}}</ion-item-divider>
+    <ion-item-divider>{{group[0] | uppercase}}</ion-item-divider>
     <ion-item *ngFor="let product of group[1] | orderBy: ordervar">
       <h2><button ion-item (click)="detail(product.id)">{{product.name}}</button></h2>
       <p>
-        <button ion-button outline item-start icon-start (click)="addToList('shortlist', product)">
+        <button ion-button [outline] item-start icon-start (click)="op.addToList('shortlist', product, user.busId)">
           <ion-icon name="help"></ion-icon>
           Add to Shortlist
         </button>
-        <button ion-button outline item-end icon-end (click)="addToList('winelist', product)">
+        <button ion-button [outline] item-end icon-end (click)="op.addToList('winelist', product, user.busId)">
           Add to Winelist
           <ion-icon name="star"></ion-icon>
         </button>
@@ -54,10 +54,10 @@
   <ion-toolbar>
     <ion-row>
       <ion-col>
-        <button ion-button block (click)="openList('short')">Open Shortlist</button>
+        <button ion-button block (click)="openList('shortlist')">Open Shortlist</button>
       </ion-col>
       <ion-col>
-        <button ion-button block (click)="openList('wine')">Open Winelist</button>
+        <button ion-button block (click)="openList('winelist')">Open Winelist</button>
       </ion-col>
     </ion-row>
   </ion-toolbar>

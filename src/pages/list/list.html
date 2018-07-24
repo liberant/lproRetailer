@@ -1,18 +1,48 @@
-<!--
-  Generated template for the ListPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
-
   <ion-navbar>
-    <ion-title>List</ion-title>
+    <ion-title>{{listType | uppercase }}</ion-title>
   </ion-navbar>
-
+  <ion-toolbar>
+    <ion-row>
+      <ion-col col-6>
+        <ion-item>
+          <ion-label floating>Group By</ion-label>
+          <ion-select [(ngModel)]="groupvar" interface="popover">
+            <ion-option value="region">Region</ion-option>
+            <ion-option value="variety">Variety</ion-option>
+            <ion-option value="producer">Producer</ion-option>
+            <ion-option value="vintage">Vintage</ion-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+      <ion-col col-6>
+        <ion-item>
+          <ion-label floating>Order By</ion-label>
+          <ion-select [(ngModel)]="ordervar" interface="popover">
+            <ion-option value="unitCost">Unit Cost</ion-option>
+            <ion-option value="vintage">Vintage</ion-option>
+            <ion-option value="name">Name</ion-option>
+            <ion-option value="updatedAt">Recently Updated</ion-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
 </ion-header>
 
-
 <ion-content padding>
-
+    <ion-list *ngFor="let group of productsList$ | async | groupBy: groupvar | pairs">
+  <ion-list-header>{{group[0] | uppercase }}</ion-list-header>
+  <ion-item *ngFor="let product of group[1] | orderBy: ordervar">
+    <button ion-button item-start icon-only>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <button ion-item (click)="detail(product.id)">
+      {{product.name}}
+    </button>
+  </ion-item>
+  </ion-list>
 </ion-content>
+<ion-footer>
+  <button ion-button block (click)="closeModal()">Done</button>
+</ion-footer>

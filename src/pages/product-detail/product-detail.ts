@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 
 import { FirestoreProvider } from '../../providers/firestore/firestore';
 import { AuthProvider } from '../../providers/auth/auth';
+import { OrdersProvider } from '../../providers/orders/orders';
 
 import { Product } from '../../models/product-model';
 import { User } from '../../models/user-model';
@@ -18,22 +19,19 @@ export class ProductDetailPage {
   @ViewChild('productProfile') content: Content;
 
   id: string;
-  pid: string;
   user: User;
   path: string;
-  product: Observable<Product>;
+  product$: Observable<Product>;
   state: string;
 
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public afs: FirestoreProvider, public auth: AuthProvider,) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public afs: FirestoreProvider, public auth: AuthProvider,  public op: OrdersProvider) {
     this.user = this.auth.user$.getValue();
     this.id = this.navParams.get('id');
 
   }
   ionViewDidLoad() {
-    this.product = this.afs.doc$<Product>(`product/${this.id}`);
-
-    console.log('ionViewDidLoad ProductDetailPage');
+    this.product$ = this.afs.doc$<Product>(`product/${this.id}`);
   }
 
 }

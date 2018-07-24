@@ -1,13 +1,7 @@
-import { NgModule, ErrorHandler } from '@angular/core';
+import { LOCALE_ID, NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
-
-import { ProfilePage } from '../pages/profile/profile'
-import { SelectPage } from '../pages/select/select';
-import { OrderPage } from '../pages/order/order';
-import { ReceivePage } from '../pages/receive/receive';
-import { TabsPage } from '../pages/tabs/tabs';
 
 import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
@@ -22,17 +16,9 @@ import { AuthProvider } from '../providers/auth/auth';
 import { FirestoreProvider } from '../providers/firestore/firestore';
 import { OrdersProvider } from '../providers/orders/orders';
 
-import { NgPipesModule } from 'ngx-pipes';
-
-
 @NgModule({
   declarations: [
     MyApp,
-    ProfilePage,
-    SelectPage,
-    OrderPage,
-    ReceivePage,
-    TabsPage,
   ],
   imports: [
     BrowserModule,
@@ -41,21 +27,16 @@ import { NgPipesModule } from 'ngx-pipes';
     AngularFireAuthModule,
     AngularFirestoreModule,
     AngularFireStorageModule,
-    NgPipesModule,
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    ProfilePage,
-    SelectPage,
-    OrderPage,
-    ReceivePage,
-    TabsPage,
   ],
   providers: [
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
+    { provide: LOCALE_ID, useValue: 'en-AU' },
     AuthProvider,
     FirestoreProvider,
     OrdersProvider
