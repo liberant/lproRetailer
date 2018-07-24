@@ -46,7 +46,7 @@ export class OrdersProvider {
       approved: false,
       shipped: false,
       received: false,
-      status: 'submitted'
+      status: 'submitted',
     };
     this.afs.set(`orders/${oid}`, newOrder);
 
