@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Dashboard</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="this.auth.logoutUser()">
+        <ion-icon name="power"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-grid>
+    <ion-row>
+      <ion-col *ngIf="auth.user$ | async as user">
+        <ion-list>
+          <ion-list-header>Read direct from auth</ion-list-header>
+          <ion-item>User ID: {{user.id}}</ion-item>
+          <ion-item>Bus Id: {{user.busId}}</ion-item>
+          <ion-item>Type: {{user.busType}}</ion-item>
+        </ion-list>
+      </ion-col>
+      <ion-col *ngIf="auth.business$ | async as business">
+        <ion-list>
+          <ion-list-header>Read direct from auth</ion-list-header>
+          <ion-item>Business ID: {{business.id}}</ion-item>
+          <ion-item>Business Name: {{business.name}}</ion-item>
+          <ion-item>Type: {{business.type}}</ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
