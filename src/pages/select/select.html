@@ -32,11 +32,7 @@
     </ion-grid>
   </ion-toolbar>
 </ion-header>
-
-
 <ion-content padding>
-
-
   <ion-item-group *ngFor="let group of productsList | async | groupBy: groupvar | pairs">
     <ion-item-divider>{{group[0] | ucfirst}}</ion-item-divider>
     <ion-item *ngFor="let product of group[1] | orderBy: ordervar">
@@ -51,15 +47,9 @@
           <ion-icon name="star"></ion-icon>
         </button>
       </p>
-
-
     </ion-item>
   </ion-item-group>
 </ion-content>
-
-
-
-
 <ion-footer>
   <ion-toolbar>
     <ion-row>

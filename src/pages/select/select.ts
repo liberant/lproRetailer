@@ -28,7 +28,7 @@ export class SelectPage {
   }
 
   detail(id: string) {
-    this.navCtrl.push('ProductPage', { id });
+    this.navCtrl.push('ProductDetailPage', { id });
   }
 
   openList(type) {
@@ -38,16 +38,7 @@ export class SelectPage {
 
   async addToList(toList: string, product: Product) {
     console.log(toList, product, this.user);
-    const msg = this.afs.upsert(`business/${this.user.busId}/${toList}/${product.id}`, product).then(async res => {
-      await this.afs.upsert(`business/${product.pid}/interested/${this.user.busId}`, {
-        id: this.user.busId,
-        name: this.user.busName
-      });
-      await this.afs.upsert(`business/${product.pid}/interested/${this.user.busId}/${toList}/${product.id}`, {
-        name: product.name,
-        user: `${this.user.firstName} ${this.user.lastName}`
-      });
-    });
+    const msg = this.afs.upsert(`business/${this.user.busId}/${toList}/${product.id}`, {product});
     this.presentToast(`${product.name} added successfully to ${toList}`);
     console.log(msg);
   }
