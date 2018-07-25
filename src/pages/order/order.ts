@@ -1,11 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
 import { GroupByPipe, PairsPipe } from 'ngx-pipes';
-import { Observable } from 'rxjs';
-import { first } from 'rxjs/operators';
 
 import { Business } from '../../models/business-model';
-import { Order } from '../../models/order-model';
 import { Product } from '../../models/product-model';
 import { User } from '../../models/user-model';
 import { AuthProvider } from '../../providers/auth/auth';
@@ -25,14 +22,9 @@ export class OrderPage {
   groupvar = 'region';
   ordervar = 'unitCost';
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private afs: FirestoreProvider, public auth: AuthProvider, public viewCtrl: ViewController, public op: OrdersProvider, public groupBy: GroupByPipe, public pairs: PairsPipe) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private afs: FirestoreProvider, public auth: AuthProvider, public viewCtrl: ViewController, public op: OrdersProvider, public groupby: GroupByPipe, public pairs: PairsPipe) {
     this.user = this.auth.user$.value;
     this.business = this.auth.business$.value;
-  }
-
-  ionViewDidLoad() {
-   // this.op.load(this.business.id);
-   // this.productsList$ = this.op.wineList$;
   }
 
   detail(id: string) {
@@ -44,19 +36,19 @@ export class OrderPage {
     this.afs.update<Product>(`business/${this.business.id}/winelist/${id}`, { qty });
   }
 
-  order() {
+  async order() {
     const orderItems = [];
-    this.op.wineList$.pipe(first()).subscribe(product => {
+    await this.afs.getCol<Product>(`business/${this.business.id}/winelist`).then(product => {
+      console.log(product);
       product.forEach(prod => {
         if (prod.qty >= 1) {
           orderItems.push(prod);
         }
       });
     });
-    const producers = this.groupBy.transform(orderItems, 'producer');
+    const producers = await this.groupby.transform(orderItems, 'producer');
     for (const i in producers) {
-      console.log(producers[ i ]);
-      this.op.placeOrder(producers[i]);
+      this.op.placeOrder(this.business, producers[i]);
     }
   }
 }

@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { ToastController } from 'ionic-angular';
-import { FirestoreProvider } from '../firestore/firestore';
-import { AuthProvider } from '../auth/auth';
-import { Product } from '../../models/product-model';
 import { Observable } from 'rxjs';
+
 import { Business } from '../../models/business-model';
+import { Order } from '../../models/order-model';
+import { Product } from '../../models/product-model';
+import { AuthProvider } from '../auth/auth';
+import { FirestoreProvider } from '../firestore/firestore';
 
 @Injectable()
 
@@ -25,31 +27,37 @@ export class OrdersProvider {
     console.log(msg);
   }
 
-  async placeOrder(order) {
+  async placeOrder(business, order) {
     console.log(order);
     const oid = this.afs.getId();
-    const retailer = await this.afs.get(`business/${order.rid}`, 'name');
     const today = new Date();
-    order[ 1 ].forEach(product => {
-      this.afs.add(`orders/${oid}/products`, product);
-      this.afs.update(`business/${order.rid}/winelist/${product.id}`, {
-        qty: undefined, onOrder: product.onOrder + product.qty });
+    let total = 0;
+    order.forEach(product => {
+      this.afs.update(`business/${business.id}/winelist/${product.id}`, {
+        qty: (null), onOrder: product.onOrder + product.qty });
+      total = +(product.qty * product.unitCost);
     });
     const newOrder = {
       id: oid,
-      rid: order.rid,
-      retailer,
-      pid: order[ 1 ][ 0 ].pid,
-      producer: order[ 0 ],
-      total: order.total,
+      rid: business.id,
+      retailer: business.name,
+      pid: order[ 0 ].pid,
+      producer: order[ 0 ].producer,
+      products: order,
+      total,
       orderDate: today,
       approved: false,
       shipped: false,
       received: false,
       status: 'submitted',
     };
-    this.afs.set(`orders/${oid}`, newOrder);
+    console.log(newOrder);
+    this.afs.set<Order>(`orders/${oid}`, newOrder);
 
+  }
+  receiveOrder(id) {
+    const today = new Date();
+    this.afs.update<Order>(`orders/${id}`, { status: 'received', received: true, receivedDate: today });
   }
 
   contact(id) {

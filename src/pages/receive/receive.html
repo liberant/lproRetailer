@@ -62,16 +62,16 @@
                       </ion-col>
                     </ion-row>
                   </ion-col>
-                  <ion-col col-6 justify-content-center>
+                  <ion-col col-6 text-center="">
                     <ion-item>
                       Receive Order
                     </ion-item>
-                    <button ion-button ><ion-icon name="qr-scanner"></ion-icon></button>
+                    <button ion-button align-self-center (click)="op.receiveOrder(order.id)"><ion-icon name="qr-scanner"></ion-icon></button>
                   </ion-col>
                 </ion-row>
                 <ion-row *ngSwitchCase="'received'">
                   <ion-col>
-                    {{order.receivedDate.toDate()  | date: 'dd/MM/yyy'}}
+                   Received Date: {{order.receivedDate.toDate()  | date: 'dd/MM/yyy'}}
                   </ion-col>
                 </ion-row>
               </ion-grid>
