@@ -1,8 +1,8 @@
 {
   "name": "lproRetailer",
-  "app_id": "8ce3591c",
-  "type": "ionic-angular",
   "integrations": {
     "cordova": {}
-  }
+  },
+  "type": "ionic-angular",
+  "pro_id": "e7c060d6"
 }
